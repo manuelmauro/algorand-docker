@@ -17,9 +17,7 @@ RUN cp ${ALGORAND_NODE}/genesisfiles/mainnet/genesis.json ${ALGORAND_DATA}
 
 COPY config.json ${ALGORAND_DATA}
 
-RUN goal node start
-
 VOLUME ${ALGORAND_DATA}
 
 EXPOSE 8080
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["sh", "-c", "goal node start && tail -f ${ALGORAND_DATA}/node.log"]
