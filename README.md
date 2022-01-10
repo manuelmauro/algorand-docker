@@ -9,5 +9,5 @@ docker build -t algorand:<tag> .
 and run a container with this
 
 ```bash
-docker run algorand:<tag>
+docker run --mount source=data,target=/node/data algo:<tag>
 ```

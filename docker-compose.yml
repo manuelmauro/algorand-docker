@@ -1,8 +1,34 @@
-version: '3.8'
+version: '3'
+
 services:
-  node:
-    image: algo:latest
+  algod:
+    image: "algod"
+    build:
+      context: ./algod
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     volumes:
       - ./data:/node/data
+
+  indexer:
+    image: "indexer"
+    build:
+      context: ./indexer
+      dockerfile: Dockerfile
+    ports:
+      - 8980:8980
+    restart: unless-stopped
+    environment:
+      DATABASE_NAME: pgdb
+    depends_on:
+      - indexer-db
+
+  indexer-db:
+    image: "postgres"
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: algorand
+      POSTGRES_PASSWORD: indexer
+      POSTGRES_DB: pgdb
